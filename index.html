@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff1f5">
+<title>A little question for you 💌</title>
+
+<style>
+  @import url('data:text/css,');
+
+  :root {
+    color-scheme: light;
+    --pink: #e74779;
+    --ink: #46283a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    overflow-x: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse at 15% 15%, #ffd5e5, transparent 50%),
+      radial-gradient(ellipse at 90% 85%, #e5d9ff, transparent 50%),
+      #fff6f8;
+  }
+
+  .hearts {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -60px;
+    opacity: 0;
+    animation: floatUp var(--duration) linear infinite;
+    animation-delay: var(--delay);
+    font-size: var(--size);
+  }
+
+  @keyframes floatUp {
+    10% { opacity: .45; }
+    90% { opacity: .3; }
+    100% {
+      transform: translateY(-115vh) rotate(35deg);
+      opacity: 0;
+    }
+  }
+
+  .card {
+    position: relative;
+    width: min(100%, 530px);
+    padding: clamp(30px, 7vw, 56px);
+    text-align: center;
+    border: 1px solid #ffffff;
+    border-radius: 32px;
+    background: #ffffffb8;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 24px 90px #87355518;
+    animation: arrive .8s ease both;
+  }
+
+  @keyframes arrive {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    font: 600 11px/1.5 system-ui, sans-serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #a46a81;
+  }
+
+  .envelope {
+    display: block;
+    font-size: 66px;
+    margin: 25px 0;
+    animation: sway 3s ease-in-out infinite;
+  }
+
+  @keyframes sway {
+    50% { transform: translateY(-7px) rotate(-5deg); }
+  }
+
+  h1 {
+    margin: 0 0 20px;
+    font-size: clamp(34px, 8vw, 49px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -1.5px;
+  }
+
+  h1 em { color: var(--pink); }
+
+  .message {
+    max-width: 350px;
+    margin: 0 auto;
+    color: #876879;
+    font: 15px/1.85 system-ui, sans-serif;
+  }
+
+  .timer-box {
+    margin: 28px 0;
+    padding: 17px;
+    border: 1px solid #efdce4;
+    border-radius: 18px;
+    background: #fff8fb;
+  }
+
+  .timer-label {
+    display: block;
+    color: #a0788a;
+    font: 11px/1.5 system-ui, sans-serif;
+    letter-spacing: 1px;
+  }
+
+  #timer {
+    display: block;
+    margin-top: 5px;
+    font: 500 27px/1.4 ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    color: #bb4b76;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  button {
+    min-height: 50px;
+    padding: 14px 25px;
+    border: 0;
+    border-radius: 100px;
+    cursor: pointer;
+    font: 600 14px/1.4 system-ui, sans-serif;
+    transition: transform .2s, box-shadow .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:hover { transform: translateY(-3px); }
+  button:active { transform: scale(.97); }
+  button:focus-visible { outline: 3px solid #8c5bc2; outline-offset: 5px; }
+
+  #yes {
+    background: var(--pink);
+    color: white;
+    box-shadow: 0 8px 25px #e7477938;
+  }
+
+  #no { background: #f2e9ef; color: #806476; }
+
+  .footnote {
+    margin-top: 26px;
+    color: #b18b9d;
+    font: 11px/1.7 system-ui, sans-serif;
+  }
+
+  [hidden] { display: none !important; }
+
+  #result { animation: arrive .7s ease both; }
+
+  .result-icon {
+    display: block;
+    margin: 16px 0 24px;
+    font-size: 78px;
+  }
+
+  #result-message { white-space: pre-line; }
+
+  .confetti {
+    position: fixed;
+    top: -25px;
+    pointer-events: none;
+    z-index: 5;
+    animation: fall var(--fall-time) linear forwards;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translate(var(--drift), 110vh) rotate(540deg);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .hearts, .confetti { display: none; }
+  }
+</style>
+</head>
+
+<body>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+
+<main class="card">
+  <div class="eyebrow">One little question. A whole lot of feelings.</div>
+
+  <section id="question">
+    <span class="envelope" aria-hidden="true">💌</span>
+
+    <!-- Personalize the message below before sharing. -->
+    <h1>Will you be my <em>girlfriend?</em></h1>
+
+    <p class="message">
+      Somewhere between our conversations and your smile,
+      you became my favorite part of the day.
+      I’d love to make a few more memories with you.
+    </p>
+
+    <div class="timer-box">
+      <span class="timer-label" id="timer-label">
+        A LITTLE MOMENT, WAITING FOR YOUR ANSWER
+      </span>
+      <span id="timer" role="timer" aria-label="Time since opening">
+        00:00:00
+      </span>
+    </div>
+
+    <div class="buttons">
+      <button id="yes" type="button">Yes, I’d love to 💖</button>
+      <button id="no" type="button">No, thank you 🤍</button>
+    </div>
+
+    <p class="footnote">A little courage from me. A completely free choice for you.</p>
+  </section>
+
+  <section id="result" hidden aria-live="polite" aria-atomic="true">
+    <span class="result-icon" id="result-icon" aria-hidden="true">💖</span>
+    <h1 id="result-title"></h1>
+    <p class="message" id="result-message"></p>
+
+    <div class="timer-box" id="frozen-box" hidden>
+      <span class="timer-label">THE MOMENT YOU SAID YES</span>
+      <span id="frozen-time"
+        style="display:block;margin-top:7px;font:500 27px/1.4 ui-monospace,monospace;color:#bb4b76">
+      </span>
+      <span id="moment"
+        style="display:block;margin-top:9px;font:12px/1.6 system-ui,sans-serif;color:#a0788a">
+      </span>
+    </div>
+
+    <p class="footnote" id="result-footer"></p>
+  </section>
+</main>
+
+<script>
+  // Everything exists only in this page's memory.
+  // No storage, cookies, tracking, or network requests.
+  const startedAt = performance.now();
+  let answered = false;
+
+  const timer = document.getElementById("timer");
+  const question = document.getElementById("question");
+  const result = document.getElementById("result");
+
+  function formatTime(milliseconds) {
+    const seconds = Math.floor(milliseconds / 1000);
+    const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor(seconds / 60) % 60).padStart(2, "0");
+    const remaining = String(seconds % 60).padStart(2, "0");
+    return `${hours}:${minutes}:${remaining}`;
+  }
+
+  function updateTimer() {
+    timer.textContent = formatTime(performance.now() - startedAt);
+  }
+
+  const timerInterval = setInterval(updateTimer, 100);
+  updateTimer();
+
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reducedMotion) {
+    const hearts = document.getElementById("hearts");
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElement("span");
+      heart.className = "heart";
+      heart.textContent = ["♡", "♥", "💕"][i % 3];
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.color = "#e99bb8";
+      heart.style.setProperty("--size", `${16 + Math.random() * 20}px`);
+      heart.style.setProperty("--duration", `${12 + Math.random() * 12}s`);
+      heart.style.setProperty("--delay", `${-Math.random() * 24}s`);
+      hearts.appendChild(heart);
+    }
+  }
+
+  function celebrate() {
+    if (reducedMotion) return;
+
+    for (let i = 0; i < 65; i++) {
+      const piece = document.createElement("span");
+      piece.className = "confetti";
+      piece.textContent = ["💖", "💕", "✨", "🌸", "🤍"][i % 5];
+      piece.style.left = `${Math.random() * 100}vw`;
+      piece.style.fontSize = `${14 + Math.random() * 16}px`;
+      piece.style.setProperty("--fall-time", `${3 + Math.random() * 3}s`);
+      piece.style.setProperty("--drift", `${Math.random() * 160 - 80}px`);
+      piece.style.animationDelay = `${Math.random() * .8}s`;
+      document.body.appendChild(piece);
+      piece.addEventListener("animationend", () => piece.remove(), { once: true });
+    }
+  }
+
+  function answer(isYes) {
+    if (answered) return;
+    answered = true;
+
+    // Capture the elapsed time immediately, before changing the page.
+    const elapsed = performance.now() - startedAt;
+    const acceptedAt = new Date();
+    clearInterval(timerInterval);
+    timer.textContent = formatTime(elapsed);
+
+    question.hidden = true;
+    result.hidden = false;
+
+    document.getElementById("result-icon").textContent = isYes ? "💖" : "🤍";
+    document.getElementById("result-title").textContent =
+      isYes ? "You just made my day." : "Thank you for being honest.";
+
+    document.getElementById("result-message").textContent = isYes
+      ? "If I could pause one moment, it would be this one.\nHere’s to our first chapter, and all the little things ahead."
+      : "Your answer matters, and I respect it.\nI’m glad I found the courage to ask. Wishing you lovely things, always.";
+
+    document.getElementById("result-footer").textContent = isYes
+      ? "Send me a screenshot or tell me your answer 💌"
+      : "No pressure. Just kindness.";
+
+    if (isYes) {
+      document.getElementById("frozen-box").hidden = false;
+      document.getElementById("frozen-time").textContent = formatTime(elapsed);
+      document.getElementById("moment").textContent =
+        acceptedAt.toLocaleString(undefined, {
+          dateStyle: "long",
+          timeStyle: "medium"
+        });
+      document.title = "She said yes! 💖";
+      celebrate();
+    } else {
+      document.title = "Thank you for your honesty 🤍";
+    }
+  }
+
+  document.getElementById("yes").addEventListener("click", () => answer(true));
+  document.getElementById("no").addEventListener("click", () => answer(false));
+</script>
+</body>
+</html>
